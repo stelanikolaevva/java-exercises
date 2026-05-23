@@ -9,43 +9,39 @@ package com.amigoscode._2_developers._5_methods;
  */
 public class MethodOverloading {
 
-    // TODO: 1 - Create a method: int add(int a, int b)
-    //  Returns the sum of two integers.
+    private static int add(int a, int b) {
+        return a + b;
+    }
 
+    private static int add(int a, int b, int c) {
+        return a + b + c;
+    }
 
-    // TODO: 2 - Create an overloaded method: int add(int a, int b, int c)
-    //  Returns the sum of three integers.
+    private static double add(double a, double b) {
+        return a + b;
+    }
 
+    private static String format(String value) {
+        return String.format("[%s]", value);
+    }
 
-    // TODO: 3 - Create an overloaded method: double add(double a, double b)
-    //  Returns the sum of two doubles.
+    private static String format(int value) {
+        return String.format("[%05d]", value);
+    }
 
+    private static String format(String label, int value) {
+        return String.format("\"%s\": %d", label, value);
+    }
 
-    // TODO: 4 - Create a method: String format(String value)
-    //  Returns the string wrapped in square brackets, e.g., "[hello]".
+    static void main(String[] args) {
 
+        System.out.println("Addition of 2 + 3 is " + add(2, 3));
+        System.out.println("Addition of 1 + 2 + 3 is " + add(1, 2, 3));
+        System.out.println("Addition of 1.5 + 2.5 is " + add(1.5, 2.5));
 
-    // TODO: 5 - Create an overloaded method: String format(int value)
-    //  Returns the integer formatted with leading zeros to 5 digits.
-    //  Example: format(42) returns "00042".
-    //  Hint: use String.format("%05d", value)
-
-
-    // TODO: 6 - Create an overloaded method: String format(String label, int value)
-    //  Returns "label: value", e.g., format("Score", 95) returns "Score: 95".
-
-
-    public static void main(String[] args) {
-        MethodOverloading mo = new MethodOverloading();
-
-        // TODO: 7 - Call each overloaded method and print the results:
-        //  - add(2, 3)
-        //  - add(1, 2, 3)
-        //  - add(1.5, 2.5)
-        //  - format("hello")
-        //  - format(42)
-        //  - format("Score", 95)
-        //  Print each result with a descriptive label.
+        System.out.println("String formated in square brackets: " + format("hello"));
+        System.out.println("Integer formatted with leading zeros to 5 digits: " + format(42));
+        System.out.println("String formated: " + format("Score", 95));
 
     }
 }
