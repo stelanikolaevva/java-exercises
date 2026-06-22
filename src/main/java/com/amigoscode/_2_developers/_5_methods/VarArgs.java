@@ -1,5 +1,6 @@
 package com.amigoscode._2_developers._5_methods;
 
+import java.util.Arrays;
 /**
  * Variable Arguments (Varargs) Exercises
  *
@@ -8,60 +9,82 @@ package com.amigoscode._2_developers._5_methods;
  */
 public class VarArgs {
 
-    // TODO: 1 - Create a method: int sum(int... numbers)
-    //  Returns the sum of all provided numbers.
-    //  If no arguments are provided, return 0.
-    //  Hint: use a for-each loop to iterate over 'numbers'.
+    private static int sum(int... numbers) {
+        if (numbers == null) {
+            return 0;
+        }
+        int sum = 0;
+        for (int number : numbers) {
+            sum += number;
+        }
+        return sum;
+    }
 
 
-    // TODO: 2 - Create a method: String concatenate(String... strings)
-    //  Joins all strings with a single space between them.
-    //  Example: concatenate("Hello", "World") returns "Hello World"
-    //  If no arguments, return an empty string "".
-    //  Hint: use StringBuilder or String.join(" ", strings).
+    private static String concatenate(String... strings) {
+        if (strings == null) {
+            return "";
+        }
+        return String.join(" ", strings);
+    }
 
+    private static int findMax(int... numbers) {
+        if (numbers == null || numbers.length == 0) {
+            throw new IllegalArgumentException("At least one number required.");
+        }
+        return Arrays.stream(numbers).max().orElse(Integer.MIN_VALUE);
+    }
 
-    // TODO: 3 - Create a method: int findMax(int... numbers)
-    //  Returns the largest value among the arguments.
-    //  If no arguments are provided, throw an IllegalArgumentException
-    //  with the message "At least one number required".
+    private static void printAll(Object... objects) {
+        if (objects == null || objects.length == 0) {
+            throw new IllegalArgumentException("At least one object required.");
+        }
+        for (int i = 0; i < objects.length; i++) {
+            System.out.println("[" + i + "] " + objects[i]);
+        }
+    }
 
+    private static String format(String prefix, int... numbers) {
+        if (numbers == null || numbers.length == 0) {
+            throw new IllegalArgumentException("At least one number required.");
+        }
+        return prefix + ": " + Arrays.toString(numbers);
 
-    // TODO: 4 - Create a method: void printAll(Object... items)
-    //  Prints each item on a separate line, prefixed with its index.
-    //  Example output:
-    //    [0] Hello
-    //    [1] 42
-    //    [2] true
+    }
 
-
-    public static void main(String[] args) {
-        VarArgs va = new VarArgs();
+    static void main(String[] args) {
 
         System.out.println("=== Sum ===");
-        // TODO: 5 - Demonstrate calling sum() with different numbers of arguments:
-        //  - sum()           -> 0  (zero args)
-        //  - sum(5)          -> 5  (one arg)
-        //  - sum(1, 2, 3, 4) -> 10 (many args)
-        //  Print each result.
-
+        System.out.println("Sum when we have no args: " + sum());
+        System.out.println("Sum when we have 5 as single arg: " + sum(5));
+        System.out.println("Sum when we have many args: " + sum(1, 2, 3, 4));
 
         System.out.println("\n=== Concatenate ===");
-        // Print: concatenate("Java", "is", "awesome")
+        System.out.println(concatenate("Java", "is", "awesome"));
 
-        System.out.println("\n=== Find Max ===");
-        // Print: findMax(3, 7, 2, 9, 1)
+        try {
+            System.out.println("\n=== Find Max ===");
+            System.out.println(findMax(3, 7, 2, 9, 1));
+            System.out.println(findMax());
 
-        System.out.println("\n=== Print All ===");
-        // Call: printAll("Hello", 42, true, 3.14)
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
 
-        System.out.println("\n=== Mixed Params ===");
-        // TODO: 6 - Create a method: String format(String prefix, int... numbers)
-        //  The first parameter is a regular String, followed by varargs.
-        //  Returns the prefix followed by the numbers in brackets.
-        //  Example: format("Values", 1, 2, 3) returns "Values: [1, 2, 3]"
-        //  Hint: varargs must be the LAST parameter in the method signature.
-        //  Then call the method and print the result here.
+        try {
+            System.out.println("\n=== Print All ===");
+            printAll("Hello", 42, true, 3.14);
+            printAll();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
 
+        try {
+            System.out.println("\n=== Mixed Params ===");
+            System.out.println(format("Values", 1, 2, 3));
+            System.out.println(format("Values"));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

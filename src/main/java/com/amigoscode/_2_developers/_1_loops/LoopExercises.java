@@ -1,5 +1,7 @@
 package com.amigoscode._2_developers._1_loops;
 
+import java.util.Random;
+
 /**
  * Loop Exercises
  *
@@ -18,10 +20,12 @@ public class LoopExercises {
      * @param n the size of the multiplication table
      */
     public static void printMultiplicationTable(int n) {
-        // TODO: 1 - Use nested for loops to print an n x n multiplication table.
-        //  Outer loop iterates rows 1..n, inner loop iterates columns 1..n.
-        //  Print each product followed by a tab, and a newline after each row.
-
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                System.out.print(i * j + "  ");
+            }
+            System.out.println();
+        }
     }
 
     /**
@@ -33,9 +37,15 @@ public class LoopExercises {
      */
     public static int sumWithSkipAndStop(int n) {
         int sum = 0;
-        // TODO: 2 - Loop from 1 to n. Use 'continue' to skip multiples of 3.
-        //  Use 'break' to stop if sum exceeds 100. Add the current number to sum otherwise.
-
+        for (int i = 1; i <= n; i++) {
+            if (i % 3 == 0) {
+                continue;
+            }
+            if ((sum + i) > 100) {
+                break;
+            }
+            sum += i;
+        }
         return sum;
     }
 
@@ -49,11 +59,17 @@ public class LoopExercises {
      */
     public static String findInMatrix(int[][] matrix, int target) {
         String result = "Not found";
-        // TODO: 3 - Define a label (e.g., 'search:') before the outer loop.
-        //  Use nested loops to iterate through the matrix.
-        //  When the target is found, set result to "Found at [row][col]" and
-        //  use 'break search;' to exit both loops.
 
+        search:
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == target) {
+                    result = String.format("Found at [%d][%d]", i, j);
+                    break search;
+                }
+            }
+
+        }
         return result;
     }
 
@@ -66,8 +82,9 @@ public class LoopExercises {
      */
     public static long factorial(int n) {
         long accumulator = 1;
-        // TODO: 4 - Use a for loop from 1 to n (inclusive), multiplying accumulator
-        //  by the loop variable each iteration. Return the result.
+        for (int i = 2; i <= n; i++) {
+            accumulator *= i;
+        }
 
         return accumulator;
     }
@@ -75,18 +92,23 @@ public class LoopExercises {
     /**
      * Prints a pyramid pattern of stars with the given number of rows.
      * Example for rows=4:
-     *       *
-     *      ***
-     *     *****
-     *    *******
+     * *
+     * ***
+     * *****
+     * *******
      *
      * @param rows the number of rows in the pyramid
      */
     public static void printPyramid(int rows) {
-        // TODO: 5 - Use nested loops to print a centered pyramid of stars.
-        //  For each row i (0-based), print (rows - i - 1) spaces followed by (2 * i + 1) stars.
-        //  Print a newline after each row.
-
+        for (int i = 0; i < rows; i++) {
+            for (int j = rows - i - 1; j >= 0; j--) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j < 2 * i + 1; j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
     }
 
     /**
@@ -98,8 +120,12 @@ public class LoopExercises {
      */
     public static String iterateBackwards(int[] arr) {
         StringBuilder sb = new StringBuilder();
-        // TODO: 6 - Use a for loop starting from the last index down to 0.
-        //  Append each element to sb. Add ", " between elements but not after the last one.
+        for (int i = arr.length - 1; i >= 0; i--) {
+            sb.append(arr[i]);
+            if (i != 0) {
+                sb.append(",");
+            }
+        }
 
         return sb.toString();
     }
@@ -114,15 +140,14 @@ public class LoopExercises {
      */
     public static int countUntilMatch(int target) {
         int attempts = 0;
-        java.util.Random random = new java.util.Random();
-        // TODO: 7 - Use while(true) to create an infinite loop.
-        //  Each iteration: increment attempts, generate a random int between 1 and 100,
-        //  and break if it matches the target.
-
+        Random random = new Random();
+        while (random.nextInt(1, 100) != target) {
+            attempts++;
+        }
         return attempts;
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         System.out.println("=== Multiplication Table (4x4) ===");
         printMultiplicationTable(4);
 

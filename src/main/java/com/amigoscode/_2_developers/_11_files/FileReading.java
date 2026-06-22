@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -28,9 +29,7 @@ public class FileReading {
      * @throws IOException if the file cannot be read
      */
     public static List<String> readAllLines(String filePath) throws IOException {
-        // TODO: 1 - Use Files.readAllLines(Path.of(filePath)) to read all lines.
-        //  Return the resulting List<String>.
-        return null;
+        return Files.readAllLines(Path.of(filePath));
     }
 
     /**
@@ -41,12 +40,12 @@ public class FileReading {
      * @throws IOException if the file cannot be read
      */
     public static void readWithBufferedReader(String filePath) throws IOException {
-        // TODO: 2 - Use try-with-resources to create a BufferedReader:
-        //  try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-        //      read lines in a loop using reader.readLine() until it returns null.
-        //      Print each line.
-        //  }
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            while (reader.readLine() != null) {
+                System.out.println(reader.readLine());
+            }
+        }
     }
 
     /**
@@ -57,10 +56,7 @@ public class FileReading {
      * @throws IOException if the file cannot be read
      */
     public static long countLines(String filePath) throws IOException {
-        // TODO: 3 - Read the file line by line and count the lines.
-        //  You can use Files.readAllLines() and call .size(),
-        //  or use Files.lines() with .count() for a stream-based approach.
-        return 0;
+        return Files.readAllLines(Path.of(filePath)).size();
     }
 
     /**
@@ -72,11 +68,7 @@ public class FileReading {
      * @throws IOException if the file cannot be read
      */
     public static List<String> searchWord(String filePath, String word) throws IOException {
-        // TODO: 4 - Read all lines from the file.
-        //  Filter the lines to only include those that contain the given word.
-        //  Hint: use a for loop and an ArrayList to collect matching lines,
-        //  or use Files.readAllLines().stream().filter(...).toList()
-        return null;
+        return Files.readAllLines(Path.of(filePath)).stream().filter(line -> line.contains(word)).toList();
     }
 
     /**
@@ -87,9 +79,7 @@ public class FileReading {
      * @throws IOException if the file cannot be read
      */
     public static String readFileAsString(String filePath) throws IOException {
-        // TODO: 5 - Use Files.readString(Path.of(filePath)) to read the entire file
-        //  as a single String. Return it.
-        return null;
+        return Files.readString(Path.of(filePath));
     }
 
     /**
@@ -99,14 +89,17 @@ public class FileReading {
      * @return an error message, or file contents if file actually exists
      */
     public static String handleMissingFile(String filePath) {
-        // TODO: 6 - Try to read the file using Files.readString().
-        //  Catch FileNotFoundException (or NoSuchFileException) and return
-        //  "File not found: " + filePath.
-        //  Catch IOException and return "Error reading file: " + e.getMessage().
-        return null;
+
+        try {
+            return Files.readString(Path.of(filePath));
+        } catch (FileNotFoundException | NoSuchFileException e) {
+            return "File not found: " + filePath;
+        } catch (IOException e) {
+            return "Error reading file: " + e.getMessage();
+        }
     }
 
-    public static void main(String[] args) throws IOException {
+    static void main(String[] args) throws IOException {
         String testFile = "test-input.txt";
 
         // First, create a test file so the exercises can run
