@@ -1,7 +1,16 @@
 package com.amigoscode._3_oop._6_solid;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.amigoscode._3_oop._6_solid.todo1.UserManager;
+import com.amigoscode._3_oop._6_solid.todo1.UserNotifier;
+import com.amigoscode._3_oop._6_solid.todo1.UserRepository;
+import com.amigoscode._3_oop._6_solid.todo1.UserValidator;
+import com.amigoscode._3_oop._6_solid.todo2.ClearanceDiscount;
+import com.amigoscode._3_oop._6_solid.todo2.Discount;
+import com.amigoscode._3_oop._6_solid.todo2.DiscountCalculator;
+import com.amigoscode._3_oop._6_solid.todo2.SeasonalDiscount;
+import com.amigoscode._3_oop._6_solid.todo5.MySQLDatabase;
+import com.amigoscode._3_oop._6_solid.todo5.PostgreSQLDatabase;
+import com.amigoscode._3_oop._6_solid.todo5.ReportGenerator;
 
 /**
  * Exercise: SOLID Principles
@@ -38,17 +47,6 @@ public class SolidExercises {
         }
     }
 
-    // TODO: 1 - Refactor by creating three separate classes:
-    //   - UserValidator with a method: void validate(String name, String email)
-    //     that throws IllegalArgumentException for invalid input
-    //   - UserRepository with a method: void save(String name, String email)
-    //     that prints "Saving user <name> to database..."
-    //   - UserNotifier with a method: void sendWelcome(String email)
-    //     that prints "Sending welcome email to <email>..."
-    //   Then create a refactored UserManager that uses all three via
-    //   constructor injection and has a createUser(name, email) method.
-
-
     // =========================================================================
     // OCP - Open/Closed Principle
     // "Open for extension, closed for modification."
@@ -66,15 +64,6 @@ public class SolidExercises {
             return 0;
         }
     }
-
-    // TODO: 2 - Refactor using an interface:
-    //   - Create a Discount interface with: double apply(double price)
-    //   - Create SeasonalDiscount implementing Discount (10% off)
-    //   - Create ClearanceDiscount implementing Discount (50% off)
-    //   - Create a DiscountCalculator class with a method:
-    //     double calculate(Discount discount, double price)
-    //     that just calls discount.apply(price)
-    //   Now new discount types can be added without modifying DiscountCalculator.
 
 
     // =========================================================================
@@ -100,15 +89,6 @@ public class SolidExercises {
         @Override void setHeight(int h) { this.width = h; this.height = h; }
         // BUG: rect.setWidth(5); rect.setHeight(3); rect.area() -> 9, not 15!
     }
-
-    // TODO: 3 - Fix the LSP violation. Create IMMUTABLE versions:
-    //   - Create a LspShape interface with: int area()
-    //   - Create an ImmutableRectangle class implementing LspShape with
-    //     final fields width and height, constructor, and area() returning width * height
-    //   - Create an ImmutableSquare class implementing LspShape with
-    //     a final field side, constructor, and area() returning side * side
-    //   Now neither class pretends to be the other. Both satisfy LspShape.
-
 
     // =========================================================================
     // ISP - Interface Segregation Principle
@@ -137,13 +117,6 @@ public class SolidExercises {
         public void sleep() { /* Robots don't sleep — forced to implement! */ }
     }
 
-    // TODO: 4 - Fix the ISP violation by splitting into smaller interfaces:
-    //   - Workable interface with: void work()
-    //   - Eatable interface with: void eat()
-    //   - Sleepable interface with: void sleep()
-    //   - HumanWorker class implementing Workable, Eatable, Sleepable
-    //   - RobotWorker class implementing only Workable
-    //   Now RobotWorker is not forced to implement methods it cannot use.
 
 
     // =========================================================================
@@ -168,33 +141,39 @@ public class SolidExercises {
         }
     }
 
-    // TODO: 5 - Fix the DIP violation:
-    //   - Create a Database interface with: String query(String sql)
-    //   - Create MySQLDatabase implementing Database
-    //   - Create PostgreSQLDatabase implementing Database
-    //     (its query() returns "PostgreSQL result for: " + sql)
-    //   - Create ReportGenerator that takes Database in its constructor
-    //     (constructor injection) and uses it in generateReport()
-
-
     // =========================================================================
     // Main method to test all exercises
     // =========================================================================
     public static void main(String[] args) {
         System.out.println("=== SOLID Exercises ===\n");
 
-        // TODO: 6 - Test SRP: Create UserValidator, UserRepository, UserNotifier,
+        // Test SRP: Create UserValidator, UserRepository, UserNotifier,
         //   and a refactored UserManager. Call createUser("Alice", "alice@test.com").
+        UserValidator userValidator = new UserValidator();
+        UserRepository userRepository = new UserRepository();
+        UserNotifier userNotifier = new UserNotifier();
+        UserManager userManager = new UserManager(userRepository, userNotifier, userValidator);
+
+        userManager.createUser("Alice", "alice@test.com");
 
 
-        // TODO: 7 - Test OCP: Create a DiscountCalculator and several Discount
+        // Test OCP: Create a DiscountCalculator and several Discount
         //   implementations. Calculate discounts for a $100 item and print results.
+        DiscountCalculator discountCalculator = new DiscountCalculator();
+        System.out.println("Seasonal: "+ discountCalculator.calculate(new SeasonalDiscount(), 100));
+        System.out.println("Seasonal: "+ discountCalculator.calculate(new ClearanceDiscount(), 100));
 
 
         // TODO: 8 - Test DIP: Create a ReportGenerator with MySQLDatabase,
         //   generate a report. Then create another with PostgreSQLDatabase
         //   and generate a report. Print both results to show the
         //   implementation was swapped without changing ReportGenerator.
+
+        ReportGenerator reportGenerator = new ReportGenerator(new MySQLDatabase());
+        reportGenerator.generateReport("SELECT * FROM reports");
+
+        ReportGenerator reportGenerator2 = new ReportGenerator(new PostgreSQLDatabase());
+        reportGenerator2.generateReport("SELECT * FROM reports");
 
     }
 }
