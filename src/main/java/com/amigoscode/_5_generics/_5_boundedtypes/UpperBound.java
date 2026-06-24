@@ -15,28 +15,44 @@ import java.util.List;
  */
 public class UpperBound {
 
-    // TODO: 1 - Create a static generic method: <T extends Number> double sum(List<T> list)
-    //  It should return the sum of all elements as a double.
-    //  Use the doubleValue() method on each element (available because T extends Number).
+    static <T extends Number> double sum(List<T> list) {
+        double sum = 0.0;
+        for (T number : list) {
+            sum += number.doubleValue();
+        }
+        return sum;
+    }
 
+    static <T extends Number> T findMax(List<T> list) {
+        if (list.isEmpty())
+            return null;
+        T max = list.getFirst();
+        for (T number : list) {
+            if (number.doubleValue() > max.doubleValue())
+                max = number;
+        }
+        return max;
+    }
 
-    // TODO: 2 - Create a static generic method: <T extends Number> T findMax(List<T> list)
-    //  It should return the largest element in the list.
-    //  Compare elements using doubleValue(). If the list is empty, return null.
+    static class NumberBox<T extends Number> {
+        private T number;
 
+        public NumberBox(T number) {
+            this.number = number;
+        }
 
-    // TODO: 3 - Create a generic class NumberBox<T extends Number> with a private T field
-    //  called "number" and a constructor that takes T.
+        public boolean isPositive() {
+            return number.doubleValue() > 0;
+        }
 
+        public int toInt() {
+            return number.intValue();
+        }
 
-    // TODO: 4 - In NumberBox, add an isPositive() method that returns true if the
-    //  stored number's doubleValue() is greater than 0.
-
-
-    // TODO: 5 - In NumberBox, add toInt() and toDouble() conversion methods that
-    //  return the stored number as an int (using intValue()) and as a double
-    //  (using doubleValue()) respectively.
-
+        public double toDouble() {
+            return number.doubleValue();
+        }
+    }
 
     public static void main(String[] args) {
 
@@ -47,12 +63,28 @@ public class UpperBound {
         //  Also create a NumberBox<Integer> and NumberBox<Double> and test
         //  isPositive(), toInt(), and toDouble().
 
+        List<Integer> ints = Arrays.asList(1, 2, 3, 4, 5);
+        List<Double> doubles = Arrays.asList(1.5, 2.5, 3.5);
+        System.out.println(sum(ints));
+        System.out.println(sum(doubles));
+        System.out.println(findMax(ints));
+        System.out.println(findMax(doubles));
 
-        // TODO: 7 - Uncomment the line below and observe the compile error.
+        NumberBox<Integer> intBox = new NumberBox<>(1);
+        System.out.println(intBox.toInt());
+        System.out.println(intBox.toDouble());
+        System.out.println(intBox.isPositive());
+
+        NumberBox<Double> doubleBox = new NumberBox<>(-1.1);
+        System.out.println(doubleBox.toInt());
+        System.out.println(doubleBox.toDouble());
+        System.out.println(doubleBox.isPositive());
+
+        //  Uncomment the line below and observe the compile error.
         //  Then comment it back out and add a comment explaining why it fails.
         //
-        // List<String> strings = Arrays.asList("a", "b");
+         //List<String> strings = Arrays.asList("a", "b");
         // double result = sum(strings);  // Why does this not compile?
-
+        //String is not a subclass of NUMBER
     }
 }

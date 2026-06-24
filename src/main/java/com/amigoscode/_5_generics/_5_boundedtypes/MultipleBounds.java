@@ -1,6 +1,6 @@
 package com.amigoscode._5_generics._5_boundedtypes;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,38 +14,73 @@ import java.util.List;
  */
 public class MultipleBounds {
 
-    // TODO: 1 - Create an interface called Printable with a single method:
-    //  void print();
+    interface Printable<T> {
+        void print();
+    }
+
+    static <T extends Comparable<T> & Printable<T>> T findMin(List<T> list) {
+        if (list.isEmpty()) {
+            return null;
+        }
+        T min = list.getFirst();
+        for (T t : list) {
+            if (t.compareTo(min) < 0) {
+                min = t;
+            }
+        }
+        return min;
+    }
 
 
-    // TODO: 2 - Create a static generic method:
-    //  <T extends Comparable<T> & Printable> T findMin(List<T> list)
-    //  It should return the smallest element using compareTo().
-    //  If the list is empty, return null.
-    //  This method requires T to be both Comparable AND Printable.
+    static class Student implements Comparable<Student>, Printable {
+        private String name;
+        private double grade;
+
+        public Student(String name, double grade) {
+            this.name = name;
+            this.grade = grade;
+        }
+
+        @Override
+        public int compareTo(Student other) {
+            return Double.compare(this.grade, other.grade);  // ascending by grade
+        }
+
+        @Override
+        public void print() {
+            System.out.println("Student{name='" + name + "', grade=" + grade + "}");
+        }
 
 
-    // TODO: 3 - Create a static inner class Student that implements both
-    //  Comparable<Student> and Printable.
-    //  Student should have a "name" (String) and "grade" (double) field,
-    //  a constructor, compareTo() based on grade (ascending),
-    //  and print() that prints "Student{name='...', grade=...}".
-    //  Also override toString() with the same format as print().
-
+        @Override
+        public String toString() {
+            return "Student{" +
+                    "name='" + name + '\'' +
+                    ", grade=" + grade +
+                    '}';
+        }
+    }
 
     public static void main(String[] args) {
 
-        // TODO: 4 - Create a List<Student> with at least 3 students having
-        //  different grades. Call findMin() to find the student with the
-        //  lowest grade. Print the result using the print() method.
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("John", 5.0));
+        students.add(new Student("Jane", 6.0));
+        students.add(new Student("Jane", 4.0));
+        findMin(students).print();
 
 
-        // TODO: 5 - Add a comment below explaining:
+
+        // Add a comment below explaining:
         //  (a) Why must a class bound come before interface bounds?
         //      e.g., <T extends SomeClass & SomeInterface> is valid
         //      but  <T extends SomeInterface & SomeClass> is NOT valid
         //  (b) Can you have multiple class bounds? Why or why not?
         //  (c) How many interface bounds can you have?
+
+        //a- we can extend 1 class and implement multiple interfaces
+        //b - we can extend only 1 class
+        //c - as much as we want
 
     }
 }
