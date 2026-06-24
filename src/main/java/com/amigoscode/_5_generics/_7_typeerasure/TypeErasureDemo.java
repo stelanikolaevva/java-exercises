@@ -1,6 +1,7 @@
 package com.amigoscode._5_generics._7_typeerasure;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,27 +19,27 @@ public class TypeErasureDemo {
 
     public static void main(String[] args) {
 
-        // TODO: 1 - Create a List<String> and a List<Integer>.
-        //  Add some elements to each. Then compare their getClass() values
-        //  using == and print the result.
-        //  Example: System.out.println(stringList.getClass() == intList.getClass());
-        //  Are they the same class at runtime? Add a comment explaining why.
+        List<String> stringList = Arrays.asList("Hello", "World");
+        List<Integer> intList = Arrays.asList(1, 2, 3);
+        System.out.println(stringList.getClass() == intList.getClass());
+        System.out.println(stringList.getClass());
+        //They are an ArrayList in a runtime, type eraser removes the generics. It is only used in compile time for type-checks
 
-
-        // TODO: 2 - Demonstrate that generic type info is lost at runtime.
-        //  Print the getClass().getName() of both lists from TODO 1.
-        //  Add a comment explaining what you see -- do the class names
-        //  include <String> or <Integer>? Why not?
+        System.out.println(stringList.getClass().getName());
+        System.out.println(intList.getClass().getName());
 
 
         // TODO: 3 - Show that instanceof works with raw types but NOT with
         //  parameterized types. Uncomment the code below, observe the error,
         //  then comment it back out. Write the correct version using the raw type.
         //
-        // if (stringList instanceof ArrayList<String>) { }  // Does this compile?
-        //
+         if (stringList instanceof ArrayList<String>) { }  // Does this compile?
+        //It will compile but it won't be true, stringList is just an ArrayList
+
         //  Write the working version:
-        //  if (stringList instanceof ArrayList) { ... }
+          if (stringList instanceof ArrayList) {
+              System.out.println("Class: " + stringList.getClass());
+          }
         //  Add a comment explaining why you cannot use instanceof with generics.
 
 
@@ -62,4 +63,7 @@ public class TypeErasureDemo {
         //  (d) Why did Java choose type erasure? (Hint: backward compatibility)
 
     }
+
+
+
 }

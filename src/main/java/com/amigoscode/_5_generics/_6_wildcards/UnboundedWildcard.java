@@ -1,5 +1,6 @@
 package com.amigoscode._5_generics._6_wildcards;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,39 +15,37 @@ import java.util.List;
  */
 public class UnboundedWildcard {
 
-    // TODO: 1 - Create a static method: void printList(List<?> list)
-    //  It should iterate through the list and print each element.
-    //  Note: elements come out as Object since the type is unknown.
+    static void printList(List<?> list) {
+        list.forEach(System.out::println);
+    }
 
-
-    // TODO: 2 - Create a static method: int getSize(List<?> list)
-    //  It should return the size of any list, regardless of its type.
-
+    static int getSize(List<?> list){
+        return list.size();
+    }
 
     public static void main(String[] args) {
 
-        // TODO: 3 - Create three lists:
-        //  (a) List<String> with values "Hello", "World"
-        //  (b) List<Integer> with values 1, 2, 3
-        //  (c) List<Double> with values 1.1, 2.2, 3.3
-        //  Call printList() and getSize() with each of them.
+        List<String> words = Arrays.asList("Hello", "World");
+        List<Integer> integers = Arrays.asList(1, 2, 3);
+        List<Double> doubleBox = Arrays.asList(1.1, 2.2, 3.3);
 
+        printList(words);
+        printList(integers);
+        printList(doubleBox);
 
-        // TODO: 4 - Demonstrate that you CANNOT add elements to a List<?>.
-        //  Uncomment the code below, observe the compile error, then comment
-        //  it back out. Add a comment explaining why adding is not allowed.
-        //
+        System.out.println(getSize(words));
+        System.out.println(getSize(integers));
+        System.out.println(getSize(doubleBox));
+
         // List<?> unknownList = Arrays.asList("a", "b", "c");
         // unknownList.add("d");       // Why does this not compile?
         // unknownList.add(1);         // Why does this not compile either?
+        //The compiler cannot perform type check of ? so the adding is prihibited
 
-
-        // TODO: 5 - Demonstrate what you CAN do with List<?>:
-        //  (a) Get the size
-        //  (b) Check if it is empty
-        //  (c) Read elements as Object
-        //  (d) Remove elements (by index or using clear())
-        //  Write code showing at least two of these operations on a List<?>.
-
+        List<?> list  = Arrays.asList(1,2,3);
+        System.out.println(list.size());
+        System.out.println(list.isEmpty());
+        list.clear();
+        System.out.println(list.remove(0));
     }
 }
